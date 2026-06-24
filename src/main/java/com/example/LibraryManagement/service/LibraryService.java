@@ -2,6 +2,7 @@ package com.example.LibraryManagement.service;
 
 import java.util.List;
 
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -11,12 +12,8 @@ import com.example.LibraryManagement.repository.LibraryRepository;
 
 @Service
 public class LibraryService {
-
-	private final LibraryRepository repo;
-
-	public LibraryService(LibraryRepository repo) {
-		this.repo = repo;
-	}
+	@Autowired
+	public LibraryRepository repo;
 
 	public List<Library> getAllBooks() {
 		return repo.findAll();
@@ -45,8 +42,7 @@ public class LibraryService {
 		repo.deleteById(id);
 	}
 
-	
-	//book issue code;;;;;;
+	// book issue code;;;;;;
 	@Transactional
 	public String issueBook(BookTransaction transaction) {
 
@@ -63,8 +59,7 @@ public class LibraryService {
 		return "Book Issue Successfully";
 	}
 
-	
-	//book return code;;;;::
+	// book return code;;;;::
 	@Transactional
 	public String returnBook(BookTransaction transaction) {
 

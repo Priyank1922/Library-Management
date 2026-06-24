@@ -2,6 +2,7 @@ package com.example.LibraryManagement.controller;
 
 import java.util.List;
 
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
 import com.example.LibraryManagement.dto.BookTransaction;
@@ -11,52 +12,44 @@ import com.example.LibraryManagement.service.LibraryService;
 @RestController
 @RequestMapping("/library")
 public class LibraryController {
+	@Autowired
+	public LibraryService service;
 
-    private final LibraryService service;
+	@GetMapping
+	public List<Library> getAllBooks() {
+		return service.getAllBooks();
+	}
 
-    public LibraryController(LibraryService service) {
-        this.service = service;
-    }
+	@GetMapping("/{id}")
+	public Library getBook(@PathVariable Long id) {
+		return service.getBook(id);
+	}
 
-    @GetMapping
-    public List<Library> getAllBooks() {
-        return service.getAllBooks();
-    }
+	@PostMapping
+	public Library addBook(@RequestBody Library library) {
+		return service.addBook(library);
+	}
 
-    @GetMapping("/{id}")
-    public Library getBook(@PathVariable Long id) {
-        return service.getBook(id);
-    }
+	@PutMapping("/{id}")
+	public Library updateBook(@PathVariable Long id, @RequestBody Library library) {
 
-    @PostMapping
-    public Library addBook(@RequestBody Library library) {
-        return service.addBook(library);
-    }
+		return service.updateBook(id, library);
+	}
 
-    @PutMapping("/{id}")
-    public Library updateBook(
-            @PathVariable Long id,
-            @RequestBody Library library) {
+	@DeleteMapping("/{id}")
+	public void deleteBook(@PathVariable Long id) {
+		service.deleteBook(id);
+	}
 
-        return service.updateBook(id, library);
-    }
+	@PostMapping("/issue")
+	public String issueBook(@RequestBody BookTransaction transaction) {
 
-    @DeleteMapping("/{id}")
-    public void deleteBook(@PathVariable Long id) {
-        service.deleteBook(id);
-    }
+		return service.issueBook(transaction);
+	}
 
-    @PostMapping("/issue")
-    public String issueBook(
-            @RequestBody BookTransaction transaction) {
+	@PostMapping("/return")
+	public String returnBook(@RequestBody BookTransaction transaction) {
 
-        return service.issueBook(transaction);
-    }
-
-    @PostMapping("/return")
-    public String returnBook(
-            @RequestBody BookTransaction transaction) {
-
-        return service.returnBook(transaction);
-    }
+		return service.returnBook(transaction);
+	}
 }
